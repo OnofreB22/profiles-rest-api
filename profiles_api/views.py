@@ -18,16 +18,15 @@ class HelloApiView(APIView):
     serializer_class = serializers.HelloSerializer
 
     def get(self, request, format=None):
-        """Returns Api View features"""
-
+        """Returns a list of Api View features"""
         an_apiview = [
-            'Uses HTTP methods as functions (get, post, patch, put, delete)',
+            'Uses HTTP methods as function (get, post, patch, put, delete)',
             'Is similar to a traditional Django View',
-            'Gives you the most control over yout aplication logic',
-            'Is mapped manually to URLs'
+            'Gives you the most control over your application logic',
+            'Is mapped manually to URLs',
         ]
 
-        return Response({'message':'Hello', 'an_apiview':an_apiview})
+        return Response({'message':'Hello!', 'an_apiview':an_apiview})
 
     def post(self, request):
         """Create a hello message with our name"""
@@ -35,7 +34,7 @@ class HelloApiView(APIView):
 
         if serializer.is_valid():
             name = serializer.validated_data.get('name')
-            message = f'Hello {name}!'
+            message = f'Hello {name}'
             return Response({'message': message})
         else:
             return Response(
@@ -44,11 +43,11 @@ class HelloApiView(APIView):
             )
 
     def put(self, request, pk=None):
-        """Handle updating object"""
+        """Handle updating an object"""
         return Response({'method': 'PUT'})
-    
+
     def patch(self, request, pk=None):
-        """Handle a particular update of an object"""
+        """Handle a partial update of an object"""
         return Response({'method': 'PATCH'})
 
     def delete(self, request, pk=None):
@@ -62,9 +61,8 @@ class HelloViewSet(viewsets.ViewSet):
 
     def list(self, request):
         """Return a hello message"""
-
         a_viewset = [
-            'Uses actions (list, create, retireve, update, partial_update',
+            'Uses actions (list, create, retrieve, update, partial_update)',
             'Automatically maps to URLs using Routers',
             'Provides more functionality with less code',
         ]
@@ -84,7 +82,7 @@ class HelloViewSet(viewsets.ViewSet):
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
-    
+
     def retrieve(self, request, pk=None):
         """Handle getting an object by its ID"""
         return Response({'http_method':'GET'})
@@ -96,7 +94,7 @@ class HelloViewSet(viewsets.ViewSet):
     def partial_update(self, request, pk=None):
         """Handle updating part of an object"""
         return Response({'http_method': 'PATCH'})
-    
+
     def destroy(self, request, pk=None):
         """Handle removing an object"""
         return Response({'http_method': 'DELETE'})
@@ -122,10 +120,7 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     serializer_class = serializers.ProfileFeedItemSerializer
     queryset = models.ProfileFeedItem.objects.all()
-    permission_classes = (
-        permissions.UpdateOwnStatus,
-        IsAuthenticated,
-    )
+    permission_classes = (permissions.UpdateOwnStatus, IsAuthenticated)
 
     def perform_create(self, serializer):
         """Sets the user profile to the logged in user"""

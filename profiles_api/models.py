@@ -4,19 +4,20 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
 
+
 class UserProfileManager(BaseUserManager):
     """Manager for user profile"""
-    
+   
     def create_user(self, email, name, password=None):
         """Create a new user profile"""
         if not email:
-            raise ValueError('Users must hava an email adress')
+            raise ValueError('User must have an email adress')
 
         email = self.normalize_email(email)
         user = self.model(email= email, name= name)
 
         user.set_password(password)
-        user.save(using=self.db)
+        user.save(using=self._db)
 
         return user
 
@@ -26,13 +27,13 @@ class UserProfileManager(BaseUserManager):
 
         user.is_superuser = True
         user.is_staff = True
-        user.save(using=self.db)
+        user.save(using=self._db)
 
         return user
 
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    """Database model for users in system"""
+    """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -66,5 +67,5 @@ class ProfileFeedItem(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """Return the model as string"""
+        """Return the model as a string"""
         return self.status_text
