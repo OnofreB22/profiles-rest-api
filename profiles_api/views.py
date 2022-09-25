@@ -18,7 +18,7 @@ class HelloApiView(APIView):
     serializer_class = serializers.HelloSerializer
 
     def get(self, request, format=None):
-        """Returns a list of Api View features"""
+        """Returns a list of APIView features"""
         an_apiview = [
             'Uses HTTP methods as function (get, post, patch, put, delete)',
             'Is similar to a traditional Django View',
@@ -85,7 +85,7 @@ class HelloViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         """Handle getting an object by its ID"""
-        return Response({'http_method':'GET'})
+        return Response({'http_method': 'GET'})
 
     def update(self, request, pk=None):
         """Handle updating an object"""
